@@ -7,11 +7,11 @@ setup(
     author="Adam Slay",
     author_email="adamslay11@gmail.com",
     description="CLI tool to read CSV file and sort by input parameter.",
-    license="GNU General Public License v3.0",
-    url="",
+    license="MIT",
+    url="https://github.com/AdamSlay/mesonet-project",
     extras_require={"testing": ["pytest"]},
     packages=find_packages("src"),
-    install_requires=["setuptools", "pandas"],
+    install_requires=["pandas"],
     entry_points={
         "console_scripts": [
             "rank.py = src.rank:main",
