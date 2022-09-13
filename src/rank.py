@@ -47,7 +47,6 @@ def read_csv_file(csv_file_path, parm, asc):
 
 def format_time(sorted_df, csv_file):
     # Format 'time' column to ISO 8601
-    # sorted_df.to_csv("../tests/data/format_time_input_asc.csv")
     try:
         YY = int(csv_file[5:9])  # Year
         MM = int(csv_file[9:11])  # Month
@@ -71,10 +70,7 @@ def format_time(sorted_df, csv_file):
         msg = (
             f"{type(e)} CSV file '{csv_file}' does not match the expected format: xxxx_YYYYMMDD.csv",
         )
-        print(
-            msg,
-            file=sys.stderr,
-        )
+        print(msg, file=sys.stderr)
         logging.error(msg)
         raise SystemExit(1)
     logging.info("Time column formatted successfully")
@@ -95,7 +91,12 @@ def output_csv(final_df, csv_file, out, parm):
                 )
     filename = f"{csv_file}_ranked_{parm}.csv"
     filepath = Path(f"{out}{filename}")
-    final_df.to_csv(filepath, index=False)
+    try:
+        final_df.to_csv(filepath, index=False)
+    except OSError as e:
+        msg = f"{type(e)} Output path '{out}' does not exist, please enter a valid output path"
+        print(msg, file=sys.stderr)
+        logging.error(msg)
     logging.info(f"'{filepath}' outputted successfully")
 
 
@@ -122,6 +123,7 @@ def main() -> int:
     sorted_df = read_csv_file(args.csv, args.parm, args.ascending)
     final_df = format_time(sorted_df, csv_file)
     output_csv(final_df, csv_file, args.output, args.parm)
+    logging.info("---Task Completed Successfully---")
     return 0
 
 
@@ -132,5 +134,4 @@ if __name__ == "__main__":
         logging.critical("Critical Error - Task Ended")
         raise SystemExit(1)
     else:
-        logging.info("---Task Completed Successfully---")
         raise SystemExit(status)
