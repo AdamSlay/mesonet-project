@@ -97,6 +97,7 @@ def output_csv(final_df, csv_file, out, parm):
         msg = f"{type(e)} Output path '{out}' does not exist, please enter a valid output path"
         print(msg, file=sys.stderr)
         logging.error(msg)
+        raise SystemExit(1)
     logging.info(f"'{filepath}' outputted successfully")
 
 
